@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>新增API</title>
+	<script src="./zepto.min.js"></script>
+	<script src="../node_modules/mockjs/dist/mock-min.js"></script>
+	<script src="./formatjson.js"></script>
+	<link rel="stylesheet" href="json.css">
+	<style>
+	 	.wraper{float: left;width: 100%;}
+		.item{width: 600px;height: 40px;margin: 0 0 20px;}
+		input{height: 20px;line-height: 20px;}
+		.item .name{width: 200px;float: left;line-height: 40px;}
+		.item .text{float: left; margin-left: 40px;width: 360px;line-height: 40px;}
+		.submit{display: block;margin: 0 auto;height: 40px;text-align: center;}
+		.box{height: 40px;margin-bottom: 20px;line-height: 40px;}
+		.box .name{float: left;width: 100px;line-height: 40px;height: 40px;}
+		.box .text{float: left;width: 200px;height: 40px;line-height: 40px;}
+		.box .select{float: left;width: 100px;line-height: 40px;}
+
+		input{
+			width: 200px;
+		}
+		.item span{
+			/*display: block;*/
+			color: red;
+			line-height: 20px;
+		}
+		.item input{
+			display: block;
+			width: 60%;
+		}
+
+		.box1, .box3 {
+			float: left;
+			width: 49%;
+			height: 700px;
+		}
+		.box2, .box4 {
+			float: right;
+			width: 49%;
+			height: 700px;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="params" style="margin-bottom:10px">
+		接口地址：<input id="Jfilename" style="width: 300px;" type="filename">
+		<!-- <p>接口地址名称：<input id="Jurl" type="url"></p> -->
+		请求方法：<input id="Jmethod" placeholder="get" type="method">
+		失败概率：<input id="Jfail" placeholder="0-100" type="fail">
+		<button id="Jsubmit">提交</button>
+	</div>
+	<div><a target="__blank" href="../getapi.html">查看接口列表</a> <a id="presee" href="javascript:;"></a></div>
+	<div class="wraper">
+		<div id="Jleft" class="box1">
+			<p>原始接口数据：<span style="color:red">请保证格式正确</span></p>
+			<textarea style="width:100%;height:600px;resize:none;margin: 0 auto;" name="" id="RawJson"></textarea>
+			<br/><button id="Jbtn1" >预览JSON</button><span id="ts" style="color:red;font-size:12px;"></span>
+			(ps：如预览正确，可将预览生成的JSON复制到输入上面的框内)
+		</div>
+		
+		<div class="box2">
+			<p>格式化JSON数据</p>
+			<div id="Canvas" class="Canvas well resizable processed" style="height:600px;overflow:auto;">
+				<pre class="CodeContainer">
+			   
+				</pre>
+			</div>
+		</div>
+
+		<div id="Jright"  class="box3" >
+			<p>接口数据返回格式：<span style="color:red">可按照所需规则修改格式</span> <button id="Jbtn2">生成数据</button></p>
+			<textarea style="float: left; width:100%;height:600px;resize:none;margin: 0 auto;" name="" id="Jresult"></textarea>
+		</div>
+
+		<div class="result box4">
+			<p style="color:red">生成随机数据如下：</p>
+			<div id="Jdata" class="Canvas well resizable processed" style="height:600px;width:90%;margin:0 auto;overflow:auto;">
+				<pre class="CodeContainer">
+			   
+				</pre>
+			</div>	
+		</div>
+	</div>
+	
+	<div class="adjust" style="float: left;width: 30%;margin: 0 2%;height: 600px;display:none">
+		<p style="color:red">编辑规则：</p>
+		<div class="list" style="border:1px solid #ccc;height: 600px;">
+			
+		</div>
+	</div>
+</body>
+<script>
+	var Random = Mock.Random;
+
+	var randomData;
+	$('#Jbtn1').on('click', function(event) {
+		Process('Canvas', $('#RawJson')[0].value)
+	});
+	$('#Jbtn2').on('click', function(event) {
+		var value = $("#Jresult")[0].value;
+		var data;
+		try{
+			data = JSON.parse(value)
+		}catch(error){
+			console.log(error);
+		}
+		randomData = Mock.mock(data)
+		Process('Jdata', JSON.stringify(randomData));
+	});
+	// function syntaxHighlight(json) {
+	//     if (typeof json != 'string') {
+	//          json = JSON.stringify(json, undefined, 2);
+	//     }
+	//     json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	//     return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+	//         var cls = 'number';
+	//         if (/^"/.test(match)) {
+	//             if (/:$/.test(match)) {
+	//                 cls = 'key';
+	//             } else {
+	//                 cls = 'string';
+	//             }
+	//         } else if (/true|false/.test(match)) {
+	//             cls = 'boolean';
+	//         } else if (/null/.test(match)) {
+	//             cls = 'null';
+	//         }
+	//         return '<span class="' + cls + '">' + match + '</span>';
+	//     });
+	// }
+
+	var targetObj = {};
+	function traversing(obj, parent){
+		var data = obj;
+		if($.isPlainObject(data)){
+			var valueList = Object.keys(data);
+			// console.log(valueList);
+			valueList.map(function(value, index){
+				if($.isArray(obj[value])){
+					parent[arrayValue(value)] = [];
+					if($.isPlainObject(obj[value][0])){
+						if($.isArray(obj[value][0])){
+							parent[arrayValue(value)][0] = [];
+						} else {
+							parent[arrayValue(value)][0] = {};
+						}
+						traversing(obj[value][0], parent[arrayValue(value)][0])
+					} else {
+						traversing(obj[value][0], parent[arrayValue(value)])
+					}
+				} else if($.isPlainObject(obj[value])){
+					parent[value] = {}
+					traversing(obj[value], parent[value])
+				} else if(typeof obj[value] == 'string'){
+					if(/jpg|png|jepg/.test(obj[value])){
+						parent[value] = Random.image('200x200')
+					} else {
+						parent[value] = "@word(0," + obj[value].length + ")";
+					} 
+				}else if(typeof obj[value] == 'number'){
+					parent[value] = "@integer(0," + obj[value] + ")";
+				}
+			})
+			var string = JSON.stringify(targetObj);
+			// console.log(string)
+			$("#Jresult")[0].value = string;
+			// $(".result").html(syntaxHighlight(Mock.mock(targetObj)));
+		}
+	}
+
+	$("#Jresult").on('input', function(){
+		var value = this.value;
+		var data;
+		// console.log(value);
+		try{
+			data = JSON.parse(value)
+		}catch(error){
+			// console.log(error);
+		}
+		randomData = Mock.mock(data)
+	})
+	
+
+	function arrayValue(value){
+		return value + '|5-10'
+	}
+
+	$("#RawJson").on('input', function(event) {
+		var value = this.value;
+		value = value.replace(/(\/\/).+/g, function($1){
+			if($1.indexOf(".com") > -1){
+				return $1
+			} else {
+				return " ";
+			}
+		})
+		this.value = value;
+		Process('Canvas', $('#RawJson')[0].value)
+		var data;
+		try{
+			data = JSON.parse(value)
+			$("#ts").html("")
+		}catch(error){
+			$("#ts").html("JSON格式不正确，请检查后重新输入！")
+			// console.log(error);
+		}
+	   traversing(data, targetObj);
+	   adjust(targetObj);
+		var editStr = "";
+		for(var value in editObj){
+			var select = "<select name='type'><option>请选择</option><option value='@cword(1,10)'>随机中文</option><option value='@word(1,10)'>随机英文</option><option value='@cname(1,10)'>name</option><option value='Random.image(100*100)'>随机图片</option></select>";
+			editStr += "<div class='item'><span>" + value + ":</span>" + select + "<input name='" + value + "'type='text' value="  + editObj[value] + "></div>"
+		}
+		$('.adjust').html(editStr)
+	})
+	
+	var editObj = {};
+	function adjust(data){
+		var value = Object.keys(data);
+		value.map(function(value, index){
+			if($.isArray(data[value])){
+
+				var tpl = value.split("|");
+				editObj[tpl[0]] = tpl[1];
+				adjust(data[value][0])
+			} else if($.isPlainObject(data[value])){
+				adjust(data[value])
+			} else {
+				editObj[value] = data[value];
+			}
+		})
+	}	
+	
+	$(document).on('change', '.item select', function() {
+		var value = this.value;
+		$(this).siblings('input')[0].value = value;
+		var name = $(this).siblings('input')[0].name;
+		editObj[name] = value;
+	})
+	$(document).on('change', '.item input', function() {
+		var value = this.value;
+		var name = this.name;
+		editObj[name] = value;
+	});
+	$(document).on('input', '.item input', function() {
+		var value = this.value;
+		var name = this.name;
+		editObj[name] = value;
+	});
+
+	$('#Jsubmit').on('click', function(event) {
+		var requestUrl = $('#Jfilename')[0].value.replace(/\s/g, '');
+		var tmp = requestUrl.split('/');
+
+		var url = tmp[tmp.length - 1];
+		var fileName = requestUrl.replace(tmp[tmp.length - 1], "").replace('/', "");
+		if(fileName.lastIndexOf('/') == fileName.length - 1){
+			fileName = fileName.slice(0, fileName.length - 1)
+		}
+		var JSON = $('#Jresult')[0].value;
+		var method = $('#Jmethod')[0].value;
+		var fail = $('#Jfail')[0].value;
+		var obj = {
+			fileName: fileName,
+			url: url,
+			mockData: JSON,
+			method: method,
+			failRandom: fail
+		}
+		console.log(obj);
+		if(requestUrl && JSON){
+			$.ajax({
+				url: '/addFile',
+				type: 'post',
+				dataType: 'json',
+				data: obj,
+			})
+			.done(function(data) {
+				if(data.code == 0){
+					alert("添加成功");
+				} else {
+					alert(data.msg)
+				}
+				$('#presee').text(requestUrl);
+				$('#presee').attr('href', requestUrl);
+			})
+		} else {
+			alert("接口地址或接口数据返回格式不能为空!!")
+		}
+	});
+
+</script>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1 @@
+[{"url":"test/aa","data":{"data":{"name":"@word(0,2)"}}},{"url":"test/aa","data":{"data":{"age":"@integer(0,1)"}},"method":"post"}]

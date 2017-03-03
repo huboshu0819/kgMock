@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>新增API</title>
+	<script src="./js/react.min.js"></script>
+	<script src="./js/react-dom.min.js"></script>
+	<style>
+		.item{width: 600px;height: 40px;margin: 0 0 20px;}
+		input{height: 20px;line-height: 20px;}
+		.item .name{width: 200px;float: left;line-height: 40px;}
+		.item .text{float: left; margin-left: 40px;width: 360px;line-height: 40px;}
+		.submit{display: block;margin: 0 auto;height: 40px;text-align: center;}
+		.box{height: 40px;margin-bottom: 20px;line-height: 40px;}
+		.box .name{float: left;width: 100px;line-height: 40px;height: 40px;}
+		.box .text{float: left;width: 200px;height: 40px;line-height: 40px;}
+		.box .select{float: left;width: 100px;line-height: 40px;}
+
+		.left{float: left;height: 600px}
+		.right{float: left;height: 600px}
+	</style>
+</head>
+<body>
+	<!-- <div class="wraper" style="">
+		<form action="/addFile" method="post">
+			<div class="item">
+				<span class="name">接口项目名称：</span>
+				<div class="text">
+					<input type="text" name="filename">
+				</div>
+			</div>
+
+			<div class="item">
+				<span class="name">接口url：</span>
+				<div class="text">
+					<input type="text" name="url">
+				</div>
+			</div>
+			<p>接口key value设置：</p> <span>增加</span>
+			<div class="box">
+				<span class="name">key值：</span>
+				<div class="text">
+					<input type="text" name="key1">
+				</div>
+				<div class="select">
+					<select class="type" name="value1">
+						<option value="string">字符串</option>
+						<option value="number">数字</option>
+						<option value="boolean">Boolean</option>
+						<option value="image">图片</option>
+					</select>
+				</div>
+				规则：<input type="text" name="length">
+			</div>
+				
+			<input class="submit" type="submit" value="提交">
+		</form>
+	</div> -->
+	<div class="wraper">
+		<div id="Jleft" class="left">
+			
+		</div>
+
+		<div id="Jright"  class="right">
+			<p>接口数据：<span style="color:red">请按照所需规则修改格式</span></p>
+			<textarea style="width:400px;height:600px;resize:none;" name="" id="Jorigin"></textarea>
+		</div>
+
+		<div id="hello"></div>
+	</div>
+</body>
+<script>
+
+	// var getId = document.getElementById(id);
+	// var LeftBox = React.createClass({
+	// 	handleChange: function(){
+	// 		console.log("a");
+	// 	},
+
+	// 	render: function(){
+	// 		return (
+	// 			<div>
+	// 				<p>原始接口数据：<span style="color:red">请保证格式正确</span> </p>
+	// 				<textarea onChange={this.handleChange} style="width:400px;height:600px;resize:none;" name="" id="Jorigin"></textarea>
+	// 			</div>
+	// 		)
+	// 	}
+	// });
+
+	// React.render(<LeftBox />, getId("Jlect"));
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

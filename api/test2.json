@@ -1,0 +1,1 @@
+[{"url":"test2/aa","data":{"data":{"hah":"@word(0,2)"}},"method":"get","failRandom":"100"},{"url":"test2/aa","data":{"data":{"age":"@integer(0,1)"}},"method":"post"}]

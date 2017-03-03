@@ -1,0 +1,1 @@
+[{"url":"jsonp/opus/web  /lrc_context","data":{"data":{"charset":"@word(0,4)","content":"@word(0,2664)","fmt":"@word(0,3)","info":"@word(0,2)","status":"@word(0,3)","ajust":"@integer(0,0)","snippetAjust":"@integer(0,100)"},"errorcode":"@word(0,7)","servertime":"@integer(0,1445417742)","status":"@integer(0,1)"},"method":"get","failRandom":0}]

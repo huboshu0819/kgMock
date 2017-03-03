@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>接口列表</title>
+	<script src="./zepto.min.js"></script>
+	<script src="./formatjson.js"></script>
+	<link rel="stylesheet" href="json.css">
+	<style>
+		.list a{
+			display: block;
+			line-height: 40px;
+			height: 40px;
+			color: #000;
+		}
+		.list a:hover{
+			color: #64854c;
+		}
+		.list a:visited{
+			color: blue;
+		}
+	</style>
+</head>
+<body>
+	<p style="color:red;">接口列表如下</p>
+	<div class="list" style="float: left;width: 20%" >
+		
+	</div>
+	<div class="detail" style="float: right;width: 75%;">
+		<div id="Jdata" class="Canvas well resizable processed" style="height:600px;width:90%;margin:0 auto;overflow:auto;">
+			<pre class="CodeContainer">
+		   
+			</pre>
+		</div>	
+	</div>
+</body>
+<script>
+var list = [], len, current = 0;
+ $.ajax({
+		url: '/fileList',
+		type: 'get',
+		dataType: 'json',
+	})
+	.done(function(data) {
+		var filelist = data.filelist;
+		len = filelist.length;
+		filelist.map(function(value, index){
+			$.ajax({
+				url: '/project_detail',
+				type: 'post',
+				dataType: 'json',
+				data: {
+					fileName: value
+				}
+			})
+			.done(function(data) {
+				var data = data.data;
+				current++;
+				if(data.urlList){
+					data.urlList.map(function(value, index){
+						console.log(value);
+						list.push(value);
+					})
+				}
+				if(current == len){
+					var str = "";
+					list.map(function(value, index){
+						str += '<a href="javascript:;" data-index="' + index + '">' + value.url + '</a>'
+					})
+					$('.list').html(str);
+				}
+			})
+		})
+	})
+
+	$(document).on('click', '.list a', function(event) {
+		event.preventDefault();
+		var index = $(this).attr('data-index');
+		Process('Jdata', JSON.stringify(list[index]));				
+	});
+	
+</script>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

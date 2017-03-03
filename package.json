@@ -1,0 +1,19 @@
+{
+  "name": "data_server",
+  "version": "1.0.0",
+  "description": "data server for test",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "huboshu",
+  "license": "ISC",
+  "devDependencies": {
+    "express": "^4.14.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.16.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  }
+}

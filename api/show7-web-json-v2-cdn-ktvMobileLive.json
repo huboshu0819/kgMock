@@ -1,0 +1,74 @@
+[
+    {
+        "url": "show7/web/json/v2/cdn/ktvMobileLive/list", 
+        "data": {
+            "data": {
+                "list|10-100": [
+                    {
+                        "fxId": "@integer(0000000,12300893)", 
+                        "kugouId": 440282638, 
+                        "roomId": 1018756, 
+                        "userLogo": "http://dummyimage.com/200x200", 
+                        "nickName": "@cword(5,10)", 
+                        "ktvUserLogo": "http://dummyimage.com/200x200", 
+                        "ktvNickName": "@cword(0,5)", 
+                        "liveStatus": "@integer(0,1)", 
+                        "lastLiveTime": "@integer(1487222832686,1487226832686)"
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "url": "show7/web/json/v2/cdn/ktvMobileLive/rank", 
+        "data": {
+            "data": {
+                "actStatus": "@integer(-1,1)",
+                "list|10-100": [
+                    {
+                        "fxId": 235621087, 
+                        "kugouId": 440282638, 
+                        "roomId": 1018756, 
+                        "rank|+1": 1, 
+                        "rankTrend": "@integer(-1,1)", 
+                        "userLogo": "http://dummyimage.com/200x200", 
+                        "nickName": "@cword(2,10)", 
+                        "ktvUserLogo": "http://dummyimage.com/200x200", 
+                        "ktvNickName": "@cword(5,10)", 
+                        "liveStatus": "@integer(0,1)", 
+                        "coin": "@integer(0,999999)"
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "url": "show7/web/json/v2/cdn/ktvMobileLive/check", 
+        "data": {
+            "data": {
+                "hasMobileLive": "0"
+            }
+        }
+    },
+    {
+        "url": "jsonp/web/get_disvert_fx_player_score", 
+        "data": {
+            "data": {
+                "score": "@integer(1200,5000)",
+                "canPlay": "@integer(0,1)",
+                "medal": "@integer(0,4)"
+            }
+        }
+    },
+    {
+        "url": "jsonp/web/get_disvert_fx_player_new_opus", 
+        "data": {
+            "data": {
+                "opusDesc": "@cword(10,30)",
+                "albumnUrl":"",
+                "songName":"@cword(2,8)",
+                "shareUrl":"http://172.17.25.236:8080/staticPub/mobile/newShare/views/index.html?sign=21c3731e1d4a4eb079952a3555c0d7a4&data=MzI0MTc0MTQx&channelId=340"
+            }   
+        }
+    }
+]
